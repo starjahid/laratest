@@ -17,4 +17,4 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-Route::any('/', [\App\Http\Controllers\HomeController::class,'index'])->name('data-list');
+Route::any('/', [\App\Http\Controllers\HomeController::class,'index'])->name('home');

@@ -18,6 +18,10 @@ class HomeController extends BaseController
      */
     public function index(Request $request){
 
+        if(isset($request->birth_year) || isset($request->birth_month)){
+            dd($request);
+        }
+
         //dd($request);
        // $users = DB::table('users')->paginate(20);
 

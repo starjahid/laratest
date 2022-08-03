@@ -37,16 +37,18 @@
             </div>
         @endif
 
-        <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('store-form')}}">
-            @csrf
+        <form name="from_date" method="get" action="{{ route('home') }}">
+            {{--@csrf--}}
             <div class="form-row">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="First name">
+                    <label>Birth Year</label>
+                    <input type="number" name="birth_year" class="form-control" placeholder="Birth Year">
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Last name">
+                    <label>Birth Month</label>
+                    <input type="number" name="birth_month" class="form-control" placeholder="Birth Month">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" style="margin-top: 20px">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
