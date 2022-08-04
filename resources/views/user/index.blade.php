@@ -32,8 +32,27 @@
     @php
         $birthYear  = isset(request()->birth_year)?request()->birth_year:'';
         $birthMonth  = isset(request()->birth_month)?request()->birth_month:'';
+        $action = (($birthYear!="")?$birthYear:0) + (($birthMonth!="")?$birthMonth:0);
+        $hasData = false;
+        if($action==0){
+            $data = count($users);
+            if(count($users)>0){
+                $hasData = true;
+            }
+        }else{
+            if(count($users['data'])>0){
+                $hasData = true;
+            }
+        }
     @endphp
 <div class="container mt-8">
+    @if (Session::has('danger'))
+        <div class="alert alert-danger">
+            <ul>
+                <li><h3>{{ Session::get('danger') }}</h3></li>
+            </ul>
+        </div>
+    @endif
     <div class="row mt-6">
             <div class="form-row">
                 <div class="col-md-3">
@@ -51,7 +70,6 @@
                 </div>
             </div>
     </div>
-
     <div class="row mt-6 justify-content-center">
         <div class="col-md-10 mt-8">
             <div class="card">
@@ -96,23 +114,28 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($users as $user)
-                                <tr>
-                                    <td>{{ $loop->index + 1 }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->phone }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->country }}</td>
-                                    <td>{{ $user->birthday }}</td>
-                                </tr>
-                            @empty
+                            @if($hasData)
+                                @forelse($users as $user)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->phone }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->country }}</td>
+                                        <td>{{ $user->birthday }}</td>
+                                    </tr>
+                                @empty
+                                    <p>No user found!</p>
+                                @endforelse
+                                @else
                                 <p>No user found!</p>
-                            @endforelse
+                            @endif
                             </tbody>
                         </table>
-                        {{ $users->links('vendor.pagination.custom') }}
+                        @if($hasData)
+                            {{ $users->links('vendor.pagination.custom') }}
+                        @endif
                     @endif
-
             </div>
         </div>
     </div>

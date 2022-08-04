@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-
 class HomeController extends BaseController
 {
     /**
@@ -26,13 +25,11 @@ class HomeController extends BaseController
                 $page = $request->get('page');
             }
             // Check In Redis
-            //$this->clear_db(0);die;
             $birthYear=  isset($request->birth_year)?$request->birth_year:0;
             $birthMonth=  isset($request->birth_month)?$request->birth_month:0;
             $redisSearchKey =$birthYear.'_'.$birthMonth;
             $users = $this->get_page_info($redisSearchKey, $page, 20);
             if(count($users['data'])==0):
-                $this->clear_db(0);
                 $users = DB::table('users');
                 if(isset($request->birth_year) && isset($request->birth_month)){
                     $usersObject = $users->whereYear('birthday', '=', $birthYear)
@@ -43,6 +40,10 @@ class HomeController extends BaseController
                     $usersObject = $users->whereYear('birthday', '=', $request->birth_year);
                 }
                 $users = $usersObject->get()->toArray();
+                if($users==""){
+                    return redirect()->back()->with('danger', 'No data found');
+                }
+                $this->clear_db(0);
                 if(count($users)>0){
                     foreach ($users as $row){
                         //dd($row);
