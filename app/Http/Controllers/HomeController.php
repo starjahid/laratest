@@ -19,16 +19,22 @@ class HomeController extends BaseController
     public function index(Request $request){
 
         if(isset($request->birth_year) || isset($request->birth_month)){
-            dd($request);
+                $users = DB::table('users');
+            if(isset($request->birth_year) && isset($request->birth_month)){
+                $users = $users->whereYear('birthday', '=', $request->birth_year)
+                    ->whereMonth('birthday', '=', $request->birth_month);
+            }elseif (isset($request->birth_month)){
+                $users = $users->whereMonth('birthday', '=', $request->birth_month);
+            }else{
+                $users = $users->whereYear('birthday', '=', $request->birth_year);
+            }
+            $users = $users->paginate(20);
+        }else{
+            $users = User::paginate(20);
         }
-
-        //dd($request);
-       // $users = DB::table('users')->paginate(20);
-
-        //dd($users);
-        //return view('user.index', ['users' => $users]);
-        $users = User::paginate(20);
-
-        return view('user.index',compact('users'));
+        //return view('user.index',compact('users'));
+        return view('user.index', [
+            'users' => $users->appends(request()->query())
+        ]);
     }
 }

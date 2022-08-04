@@ -29,31 +29,27 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+    @php
+        $birthYear  = isset(request()->birth_year)?request()->birth_year:'';
+        $birthMonth  = isset(request()->birth_month)?request()->birth_month:'';
+    @endphp
 <div class="container mt-8">
     <div class="row mt-6">
-        @if(session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <form name="from_date" method="get" action="{{ route('home') }}">
-            {{--@csrf--}}
             <div class="form-row">
                 <div class="col-md-3">
                     <label>Birth Year</label>
-                    <input type="number" name="birth_year" class="form-control" placeholder="Birth Year">
+                    <input type="number" name="birth_year" id="birth_year" value="{{ $birthYear }}" class="form-control" placeholder="Birth Year">
                 </div>
                 <div class="col-md-3">
                     <label>Birth Month</label>
-                    <input type="number" name="birth_month" class="form-control" placeholder="Birth Month">
+                    <input type="number" name="birth_month" id="birth_month" value="{{ $birthMonth }}" class="form-control" placeholder="Birth Month">
                 </div>
                 <div class="col-md-3" style="margin-top: 20px">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button onclick="actionFilter('birth_year', 'birth_month')" class="btn btn-sm btn-info font-16">
+                        Filter
+                    </button>
                 </div>
             </div>
-
-        </form>
     </div>
 
     <div class="row mt-6 justify-content-center">
@@ -90,5 +86,13 @@
         </div>
     </div>
 </div>
+<script>
+    function actionFilter(yearId, monthId){
+        var baseUrl = '<?=URL::to('/');?>';
+        var birth_year =  $("#"+yearId).val();
+        var birth_month = $("#"+monthId).val();
+        window.location.href  = baseUrl+'/?birth_year='+birth_year+"&birth_month="+birth_month;
+    }
+</script>
 </body>
 </html>
