@@ -1,4 +1,6 @@
-
+@php
+    $currentPage  = isset(request()->page)?request()->page:'1';
+@endphp
 @if ($paginator->hasPages())
     <ul class="pager">
 
@@ -20,7 +22,7 @@
 
             @if (is_array($element))
                 @foreach ($element as $page => $url)
-                    @if ($page == $paginator->currentPage())
+                    @if ($page == $currentPage)
                         <li class="active my-active"><span>{{ $page }}</span></li>
                     @else
                         <li><a href="{{ $url }}">{{ $page }}</a></li>
@@ -28,7 +30,6 @@
                 @endforeach
             @endif
         @endforeach
-
 
 
         @if ($paginator->hasMorePages())

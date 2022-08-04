@@ -55,33 +55,64 @@
     <div class="row mt-6 justify-content-center">
         <div class="col-md-10 mt-8">
             <div class="card">
-                <table class="table table-stripped">
-                    <thead>
-                    <tr>
-                        <th>No</th>
-                        <th class="th-sm">Email</th>
-                        <th class="th-sm">Phone</th>
-                        <th class="th-sm">Full Name</th>
-                        <th class="th-sm">Location</th>
-                        <th class="th-sm">Birthday</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($users as $user)
-                        <tr>
-                            <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->phone }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->country }}</td>
-                            <td>{{ $user->birthday }}</td>
-                        </tr>
-                    @empty
-                        <p>No user found!</p>
-                    @endforelse
-                    </tbody>
-                </table>
-                {{ $users->links('vendor.pagination.custom') }}
+                @if ($users['data'])
+                        <table class="table table-stripped">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th class="th-sm">Email</th>
+                                <th class="th-sm">Phone</th>
+                                <th class="th-sm">Full Name</th>
+                                <th class="th-sm">Location</th>
+                                <th class="th-sm">Birthday</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @forelse($users['data'] as $user)
+                                <tr>
+                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $user['email'] }}</td>
+                                    <td>{{ $user['phone'] }}</td>
+                                    <td>{{ $user['name'] }}</td>
+                                    <td>{{ $user['country'] }}</td>
+                                    <td>{{ $user['birthday'] }}</td>
+                                </tr>
+                            @empty
+                                <p>No user found!</p>
+                            @endforelse
+                            </tbody>
+                        </table>
+                        {{ $redisLink->links('vendor.pagination.custom') }}
+                    @else
+                        <table class="table table-stripped">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th class="th-sm">Email</th>
+                                <th class="th-sm">Phone</th>
+                                <th class="th-sm">Full Name</th>
+                                <th class="th-sm">Location</th>
+                                <th class="th-sm">Birthday</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @forelse($users as $user)
+                                <tr>
+                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->phone }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->country }}</td>
+                                    <td>{{ $user->birthday }}</td>
+                                </tr>
+                            @empty
+                                <p>No user found!</p>
+                            @endforelse
+                            </tbody>
+                        </table>
+                        {{ $users->links('vendor.pagination.custom') }}
+                    @endif
+
             </div>
         </div>
     </div>
@@ -91,7 +122,7 @@
         var baseUrl = '<?=URL::to('/');?>';
         var birth_year =  $("#"+yearId).val();
         var birth_month = $("#"+monthId).val();
-        window.location.href  = baseUrl+'/?birth_year='+birth_year+"&birth_month="+birth_month;
+        window.location.href  = baseUrl+'/?birth_year='+birth_year+"&birth_month="+birth_month+"&filter=1";
     }
 </script>
 </body>
