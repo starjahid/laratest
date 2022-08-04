@@ -122,7 +122,7 @@
         var baseUrl = '<?=URL::to('/');?>';
         var birth_year =  $("#"+yearId).val();
         var birth_month = $("#"+monthId).val();
-        window.location.href  = baseUrl+'/?birth_year='+birth_year+"&birth_month="+birth_month+"&filter=1";
+        window.location.href  = baseUrl+'/?birth_year='+birth_year+"&birth_month="+birth_month;
     }
 </script>
 </body>
